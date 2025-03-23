@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভেরিফিকেশন</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #10B981;
+            --secondary-color: #059669;
+        }
+
+        .verification-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tg-group-card {
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .tg-group-card:hover {
+            background: #F0FDF4;
+            transform: translateY(-3px);
+        }
+
+        /* বাটন ডিজেবল স্টাইল */
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-box {
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .copy-btn {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #successPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .payment-instruction {
+            background: #F0FDF4;
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .payment-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #10B981;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- নির্দেশাবলী -->
+
+    <div class="container">
+        <div class="verification-container bg-white">
+            <h3 class="text-center mb-4" style="color: var(--primary-color)">
+                <i class="fab fa-telegram"></i>ভেরিফিকেশন লাস্ট স্টেপ
+            </h3>
+
+
+            <div class="container">
+                <div class="payment-container bg-white">
+                    <h3 class="text-center mb-4" style="color: var(--primary-color)">পেমেন্ট ভেরিফিকেশন</h3>
+                    <div class="payment-instruction">
+                        <h5 class="text-success">💰 পেমেন্ট নির্দেশনা</h5>
+                        <p class="mb-1">1. আপনার ভেরিফিকেশনের জন্য <strong>১০০ টাকা</strong> আমাদের দেয়া নম্বরে
+                            বিকাশ/নগদে সেন্ড মানি করুন</p>
+                        <p class="mb-1">2. এই টাকা আপনার অ্যাকাউন্ট ব্যালেন্সে যোগ হবে</p>
+                        <p class="mb-0">3. পরবর্তীতে আপনি এই টাকা উইথড্র করতে পারবেন</p>
+                    </div>
+
+                    <!-- কেপচা সেকশন -->
+                    <div class="mb-4 text-center">
+                        <div class="captcha-box bg-light p-3 d-inline-block">
+                            <span id="captchaQuestion">8 + 3 = ?</span>
+                            <input type="number" id="captchaAnswer" class="form-control mt-2" placeholder="উত্তর লিখুন">
+                        </div>
+                    </div>
+
+                    <!-- পেমেন্ট ইনস্ট্রাকশন -->
+                    <div class="payment-box">
+                        <h5 class="mb-3">পেমেন্ট করার নিয়ম:</h5>
+                        <ol class="list-unstyled">
+                            <li>1. বিকাশ/নগদ এ <strong>100 টাকা</strong> সেন্ড মানি করুন</li>
+                            <li>2. নিচের নম্বরটি কপি করুন</li>
+                            <li>3. ট্রাঙ্কজেকশন আইডি (TrxID) ইনপুট করুন</li>
+                        </ol>
+
+                        <div class="mb-4">
+                            <label>প্রাপকের নম্বর:</label>
+                            <div class="input-group">
+                                <input type="text" id="paymentNumber" class="form-control" value="01821676054" readonly>
+                                <button class="btn copy-btn"
+                                    style="background: var(--primary-color); color: rgb(255, 255, 255)"
+                                    onclick="copyNumber()">
+                                    <i class="fas fa-copy">copy</i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- TrxID ইনপুট -->
+                        <div class="mb-3">
+                            <label>ট্রাঙ্কজেকশন আইডি (TrxID)</label>
+                            <input type="text" id="trxId" class="form-control" placeholder="TrxID লিখুন (উদা: 8A3BCD5E)"
+                                required>
+                            <small class="text-danger">সঠিক TrxID না দিলে পেমেন্ট অসম্পন্ন হতে পারে</small>
+                        </div>
+                    </div>
+                    <p>উপরের ক্যাপচা সঠিক না দিলে সাবমিট বাটন অন হবে না</p>
+                    <button class="btn w-100 mt-3" style="background: var(--primary-color); color: white"
+                        onclick="submitPayment()">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+            <div class="alert alert-info">
+                <h5 class="alert-heading">প্রয়োজনীয় শর্ত!</h5>
+                <ul class="mb-0">
+                    <li>আপনার অবশ্যই একটি টেলিগ্রাম একাউন্ট থাকতে হবে</li>
+                    <li>নিচের ২টি গ্রুপে জয়েন হতে হবে</li>
+                    <li>পেমেন্ট টি সফল ভাবে করতে হবে </li>
+                </ul>
+            </div>
+
+            <!-- টেলিগ্রাম গ্রুপ লিংক -->
+            <div class="tg-group-card">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fab fa-telegram fa-2x text-primary"></i>
+                    <div>
+                        <h5>অফিসিয়াল গ্রুপ</h5>
+                        <a href="https://t.me/your_group1" class="btn btn-sm btn-outline-primary" target="_blank">
+                            জয়েন করুন <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tg-group-card">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fab fa-telegram fa-2x text-primary"></i>
+                    <div>
+                        <h5>পেমেন্ট প্রুফ গ্রুপ</h5>
+                        <a href="https://t.me/your_group2" class="btn btn-sm btn-outline-primary" target="_blank">
+                            জয়েন করুন <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Success Popup -->
+            <div id="successPopup">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-check-circle fa-4x text-success"></i>
+                    </div>
+                    <h4>✅ পেমেন্ট সফল!</h4>
+                    <p>আপনার পেমেন্ট টি আমরা পর্যালোচনা করছি </p>
+                </div>
+            </div>
+            <!-- Spinner HTML -->
+            <div class="payment-spinner" id="paymentSpinner">
+                <div class="spinner"></div>
+                <p class="mt-3 text-muted">প্রসেসিং হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</p>
+            </div>
+
+            <script>
+
+                // পেজ লোডেই রিডাইরেক্ট চেক
+                if (localStorage.getItem('isVerified')) {
+                    window.location.href = 'compleat.html';
+                }
+                    // সিমুলেটেড API কল
+                    setTimeout(() => {
+                        localStorage.setItem('isVerified', 'true');
+                        window.location.href = 'compleat.html';
+                    }, 2000);
+                
+                function submitPayment() {
+                
+                        window.location.href = 'compleat.html';                  
+                }
+
+
+                // নম্বর কপি ফাংশন
+                function copyNumber() {
+                    navigator.clipboard.writeText('01821676054')
+                        .then(() => alert('নম্বর কপি করা হয়েছে!'))
+                        .catch(err => console.error('কপি করতে ব্যর্থ:', err));
+                }
+
+                // সাবমিট হ্যান্ডলার
+                function handleSubmission() {
+                    const spinner = document.getElementById('paymentSpinner');
+                    const trxId = document.getElementById('trxId').value;
+
+                    // ভ্যালিডেশন চেক
+                    if (!trxId || trxId.length < 8) {
+                        alert('সঠিক TrxID প্রদান করুন');
+                        return;
+                    }
+
+                    // স্পিনার দেখান
+                    spinner.style.display = 'flex';
+                 }
+            </script>
+
+</body>
+
+</html>

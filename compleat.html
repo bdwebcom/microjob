@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভেরিফিকেশন চলমান</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #10B981;
+            --secondary-color: #059669;
+        }
+
+        .completion-container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border-width: 8px;
+            border-color: var(--primary-color);
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .home-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 25px;
+        }
+
+        .home-btn:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="completion-container bg-white">
+        <!-- লোডিং স্পিনার -->
+        <div class="loading-spinner mb-4 rounded-circle border-4"></div>
+
+        <h3 class="mb-3" style="color: var(--primary-color)">
+            <i class="fas fa-check-circle me-2"></i>আপনার একাউন্ট ভেরিফিকেশন চলমান
+        </h3>
+        
+        <p class="lead text-muted mb-4">
+            ভেরিফিকেশন প্রক্রিয়া সম্পন্ন হলে আপনাকে স্বয়ংক্রিয়ভাবে জানিয়ে দেয়া হবে। 
+            সাধারণত ২৪ ঘণ্টার মধ্যে প্রক্রিয়া সম্পন্ন হয়।
+        </p>
+
+        <div class="alert alert-info">
+            <h5 class="alert-heading">কি করতে হবে?</h5>
+            <ul class="mb-0">
+                <li>ইমেইল চেক করুন (স্প্যাম ফোল্ডারও দেখুন)</li>
+                <li>টেলিগ্রাম নোটিফিকেশন চেক করুন</li>
+                <li>পেজটি রিফ্রেশ না করার অনুরোধ</li>
+            </ul>
+        </div>
+        <div class="progress mt-4" style="height: 8px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                 role="progressbar" 
+                 style="width: 45%">
+            </div>
+        </div>
+
+        <a href="home.html" class="home-btn">
+            <i class="fas fa-home me-2"></i>হোম পেজে ফিরে যান
+        </a>
+    </div>
+</div>
+
+<script>
+
+
+// অটো রিফ্রেশ (ঐচ্ছিক)
+setTimeout(() => {
+    window.location.reload();
+}, 300000); // প্রতি ৫ মিনিট পর রিফ্রেশ
+</script>
+
+</body>
+</html>
